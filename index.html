@@ -1,134 +1,205 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Internal Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    
     <style>
         /* Global Styles */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
 
+        /* LIVE BACKGROUND: Soft Pink matching your image */
         body {
-            background-color: #f9f9fb;
-            color: #333;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
-            padding: 20px;
+            margin: 0;
+            /* Soft radial gradient matching the screenshot */
+            background: radial-gradient(circle at center, #fff0f5 0%, #ffc4d4 100%);
+            color: #333;
+            position: relative;
         }
 
+        /* Floating Hearts, Flowers, and Sparkles */
+        .floating-elements {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; /* So they don't block clicks */
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .floating-elements span {
+            position: absolute;
+            display: block;
+            bottom: -50px;
+            animation: floatUp 15s linear infinite;
+            opacity: 0.7;
+        }
+
+        /* Customizing individual floating elements */
+        .floating-elements span:nth-child(1) { left: 10%; font-size: 30px; animation-delay: 0s; animation-duration: 12s; }
+        .floating-elements span:nth-child(2) { left: 25%; font-size: 20px; animation-delay: 2s; animation-duration: 15s; }
+        .floating-elements span:nth-child(3) { left: 45%; font-size: 40px; animation-delay: 5s; animation-duration: 18s; opacity: 0.5; }
+        .floating-elements span:nth-child(4) { left: 60%; font-size: 25px; animation-delay: 0s; animation-duration: 14s; }
+        .floating-elements span:nth-child(5) { left: 75%; font-size: 35px; animation-delay: 3s; animation-duration: 16s; }
+        .floating-elements span:nth-child(6) { left: 85%; font-size: 20px; animation-delay: 7s; animation-duration: 11s; }
+        .floating-elements span:nth-child(7) { left: 35%; font-size: 22px; animation-delay: 8s; animation-duration: 13s; }
+        .floating-elements span:nth-child(8) { left: 50%; font-size: 18px; animation-delay: 10s; animation-duration: 15s; }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* ATTRACTIVE FRONT: Glassmorphism Card */
         .card {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
             padding: 40px 30px;
-            border-radius: 16px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(255, 105, 135, 0.15);
             width: 100%;
             max-width: 400px;
             text-align: center;
-            border: 1px solid #eaeaea;
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
         }
 
         .screen { display: none; }
-        .screen.active {
-            display: block;
-            animation: fadeIn 0.5s ease forwards;
-        }
+        .screen.active { display: block; animation: fadeIn 0.6s ease forwards; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Typography */
         .badge {
             display: inline-block;
-            background: #f0f0f3;
-            color: #666;
-            font-size: 12px;
-            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #d81b60;
+            font-size: 13px;
+            padding: 6px 16px;
             border-radius: 20px;
             margin-bottom: 15px;
-            font-weight: 500;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        h2 { font-size: 24px; margin-bottom: 10px; color: #111; }
-        p { font-size: 14px; color: #666; margin-bottom: 25px; }
-        .subtext { font-size: 13px; color: #888; margin-top: 25px; }
+        h2 { font-size: 24px; margin-bottom: 10px; color: #222; }
+        p { font-size: 14px; color: #555; margin-bottom: 25px; }
+        
+        /* The beautiful cursive text for the success screen */
+        .cursive-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 42px;
+            color: #c2185b;
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
 
+        .subtext { font-size: 13px; color: #d81b60; margin-top: 25px; font-weight: 500;}
+
+        /* Inputs & Buttons */
         .input-group { text-align: left; margin-bottom: 20px; }
-        .input-group label {
-            display: block; font-size: 13px; color: #555; margin-bottom: 6px; font-weight: 500;
-        }
+        .input-group label { display: block; font-size: 14px; color: #333; margin-bottom: 8px; font-weight: 600; }
 
         input[type="password"] {
-            width: 100%; padding: 12px; border: 1px solid #ddd;
-            border-radius: 8px; font-size: 16px; outline: none;
+            width: 100%; padding: 14px; 
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid transparent; border-radius: 12px; 
+            font-size: 16px; outline: none; transition: all 0.3s;
         }
-        input:focus { border-color: #0070f3; }
+        input:focus { border-color: #ff8fa3; background: #fff; }
 
         button {
-            width: 100%; padding: 12px; background: #111; color: white;
-            border: none; border-radius: 8px; font-size: 16px;
-            font-weight: 500; cursor: pointer; touch-action: manipulation;
+            width: 100%; padding: 14px; 
+            background: #ff4d6d;
+            color: white; border: none; border-radius: 12px; 
+            font-size: 16px; font-weight: 600; cursor: pointer; 
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+            touch-action: manipulation; 
         }
-        button:hover { background: #333; }
+        button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255, 77, 109, 0.6); }
 
-        /* Button Overlap Stacking */
+        /* Button Overlap Stacking (3/4th rule) */
         .btn-group {
-            display: flex; justify-content: center; margin-top: 20px;
+            display: flex; justify-content: center; margin-top: 30px;
             position: relative; height: 50px;
         }
 
         .btn-group button {
-            width: 120px; position: absolute; top: 0;
+            width: 130px; position: absolute; top: 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         #btn-yes {
-            background: #ff477e;
-            z-index: 1; /* Underneath */
-            left: calc(50% - 75px); /* Shifted slightly to the left */
-        }
-
-        #btn-yes:hover {
-            background: #ff2a65;
+            background: #ff4d6d;
+            z-index: 1; 
+            left: calc(50% - 80px); 
         }
 
         #btn-no {
-            background: #f0f0f3; color: #333;
-            transition: all 0.1s ease;
-            z-index: 2; /* On Top */
-            left: calc(50% - 45px); /* Shifted right, overlapping 3/4ths of 'Yes' */
+            background: #ffffff; color: #ff4d6d;
+            border: 2px solid #ff4d6d;
+            z-index: 2; 
+            left: calc(50% - 50px); 
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
-        .heart-icon { font-size: 50px; margin-bottom: 15px; animation: pulse 1s infinite alternate; }
+        /* Success Screen Specifics */
+        .main-heart {
+            font-size: 60px;
+            margin-bottom: 10px;
+            animation: pulse 1s infinite alternate;
+        }
         @keyframes pulse { to { transform: scale(1.15); } }
-        .pink-text { color: #ff477e; }
     </style>
 </head>
 <body>
 
-    <div class="card">
+    <div class="floating-elements">
+        <span>💗</span>
+        <span>✨</span>
+        <span>🌸</span>
+        <span>💕</span>
+        <span>✨</span>
+        <span>💗</span>
+        <span>🌸</span>
+        <span>✨</span>
+    </div>
+
+    <div class="card" id="main-card">
         <div id="screen-access" class="screen active">
-            <span class="badge">Internal tool</span>
+            <span class="badge">🔒 Internal tool</span>
             <h2>Portal Access</h2>
-            <p>This thing is created by Labib.</p>
+            <p>This space is securely encrypted.</p>
             <div class="input-group">
-                <label for="access-code">Access code</label>
+                <label for="access-code">Secret Access Code</label>
                 <input type="password" id="access-code" placeholder="Enter code here...">
             </div>
-            <button onclick="checkCode()">Continue</button>
-            <p class="subtext">v1.0 · built for one person only</p>
+            <button onclick="checkCode()">Unlock Portal</button>
+            <p class="subtext" style="color: #888;">v1.0 · built exclusively for one person</p>
         </div>
 
         <div id="screen-question" class="screen">
-            <span class="badge" style="background: #ffe3ec; color: #ff477e;">One question, Nowrin🧐</span>
+            <span class="badge" style="background: rgba(255, 255, 255, 0.9); color: #ff4d6d;">One question, Nowrin👀</span>
             <h2>Do you love me?🥺</h2>
             <div class="btn-group">
                 <button id="btn-yes" onclick="goToSuccess()">Yes</button>
@@ -137,16 +208,14 @@
         </div>
 
         <div id="screen-success" class="screen">
-            <div class="heart-icon">💗</div>
-            <h2>Aww, Love you too <span class="pink-text">jaan😘</span></h2>
-            <p class="subtext" style="margin-bottom: 0; font-style: italic;">there was only ever one right answer 🌸</p>
+            <div class="main-heart">💗</div>
+            <h2 class="cursive-title">Aww, Love you too jaan😘<br>~Labib</h2>
+            <p class="subtext">there was only ever one right answer 🌸</p>
         </div>
     </div>
 
     <script>
         const SECRET_CODE = "love"; 
-        
-        // This stops ghost clicks on mobile when they tap 'No'
         let isYesLocked = false; 
 
         function checkCode() {
@@ -159,8 +228,14 @@
         }
 
         function goToSuccess() {
-            // If the ghost-click timer is active, ignore the click!
             if (isYesLocked) return; 
+            
+            // Optional: Hide the card background on success to look exactly like the screenshot
+            document.getElementById('main-card').style.background = 'transparent';
+            document.getElementById('main-card').style.boxShadow = 'none';
+            document.getElementById('main-card').style.border = 'none';
+            document.getElementById('main-card').style.backdropFilter = 'none';
+            
             switchScreen('screen-question', 'screen-success');
         }
 
@@ -172,8 +247,6 @@
         function moveNoButton(e) {
             if (e) e.preventDefault();
 
-            // Lock the 'Yes' button for half a second so the mobile phone's
-            // fake ghost-click bounces off safely.
             isYesLocked = true;
             setTimeout(() => {
                 isYesLocked = false;
