@@ -36,11 +36,7 @@
             transition: all 0.3s ease;
         }
 
-        /* Utility classes for screens */
-        .screen {
-            display: none;
-        }
-
+        .screen { display: none; }
         .screen.active {
             display: block;
             animation: fadeIn 0.5s ease forwards;
@@ -51,7 +47,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Typography & Elements */
         .badge {
             display: inline-block;
             background: #f0f0f3;
@@ -63,90 +58,42 @@
             font-weight: 500;
         }
 
-        h2 {
-            font-size: 24px;
-            margin-bottom: 10px;
-            color: #111;
-        }
+        h2 { font-size: 24px; margin-bottom: 10px; color: #111; }
+        p { font-size: 14px; color: #666; margin-bottom: 25px; }
+        .subtext { font-size: 13px; color: #888; margin-top: 25px; }
 
-        p {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 25px;
-        }
-
-        .subtext {
-            font-size: 13px;
-            color: #888;
-            margin-top: 25px;
-        }
-
-        /* Inputs & Buttons */
-        .input-group {
-            text-align: left;
-            margin-bottom: 20px;
-        }
-
+        .input-group { text-align: left; margin-bottom: 20px; }
         .input-group label {
-            display: block;
-            font-size: 13px;
-            color: #555;
-            margin-bottom: 6px;
-            font-weight: 500;
+            display: block; font-size: 13px; color: #555; margin-bottom: 6px; font-weight: 500;
         }
 
-        input[type="password"], input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            outline: none;
-            transition: border 0.2s;
+        input[type="password"] {
+            width: 100%; padding: 12px; border: 1px solid #ddd;
+            border-radius: 8px; font-size: 16px; outline: none;
         }
-
-        input:focus {
-            border-color: #0070f3;
-        }
+        input:focus { border-color: #0070f3; }
 
         button {
-            width: 100%;
-            padding: 12px;
-            background: #111;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: background 0.2s;
-            /* Prevents double-tap zooming on mobile while trying to click */
-            touch-action: manipulation; 
+            width: 100%; padding: 12px; background: #111; color: white;
+            border: none; border-radius: 8px; font-size: 16px;
+            font-weight: 500; cursor: pointer; touch-action: manipulation;
         }
+        button:hover { background: #333; }
 
-        button:hover {
-            background: #333;
-        }
-
-        /* Question Screen Button Stacking */
+        /* Button Overlap Stacking */
         .btn-group {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            position: relative;
-            height: 50px;
+            display: flex; justify-content: center; margin-top: 20px;
+            position: relative; height: 50px;
         }
 
         .btn-group button {
-            width: 120px;
-            position: absolute;
-            left: calc(50% - 60px); 
-            top: 0;
+            width: 120px; position: absolute; top: 0;
         }
 
         #btn-yes {
             background: #ff477e;
-            z-index: 1; /* Sits underneath */
+            z-index: 1; /* Underneath */
+            left: calc(50% - 75px); /* Shifted slightly to the left */
         }
 
         #btn-yes:hover {
@@ -154,42 +101,28 @@
         }
 
         #btn-no {
-            background: #f0f0f3;
-            color: #333;
+            background: #f0f0f3; color: #333;
             transition: all 0.1s ease;
-            z-index: 2; /* Sits directly on top of 'Yes' */
+            z-index: 2; /* On Top */
+            left: calc(50% - 45px); /* Shifted right, overlapping 3/4ths of 'Yes' */
         }
 
-        /* Success Screen Specifics */
-        .heart-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
-            animation: pulse 1s infinite alternate;
-        }
-
-        @keyframes pulse {
-            to { transform: scale(1.15); }
-        }
-
-        .pink-text {
-            color: #ff477e;
-        }
+        .heart-icon { font-size: 50px; margin-bottom: 15px; animation: pulse 1s infinite alternate; }
+        @keyframes pulse { to { transform: scale(1.15); } }
+        .pink-text { color: #ff477e; }
     </style>
 </head>
 <body>
 
     <div class="card">
-        
         <div id="screen-access" class="screen active">
             <span class="badge">Internal tool</span>
             <h2>Portal Access</h2>
             <p>This thing is created by Labib.</p>
-            
             <div class="input-group">
                 <label for="access-code">Access code</label>
                 <input type="password" id="access-code" placeholder="Enter code here...">
             </div>
-            
             <button onclick="checkCode()">Continue</button>
             <p class="subtext">v1.0 · built for one person only</p>
         </div>
@@ -197,7 +130,6 @@
         <div id="screen-question" class="screen">
             <span class="badge" style="background: #ffe3ec; color: #ff477e;">One question, Nowrin🧐</span>
             <h2>Do you love me?🥺</h2>
-            
             <div class="btn-group">
                 <button id="btn-yes" onclick="goToSuccess()">Yes</button>
                 <button id="btn-no" onmouseover="moveNoButton(event)" ontouchstart="moveNoButton(event)">No</button>
@@ -209,11 +141,13 @@
             <h2>Aww, Love you too <span class="pink-text">jaan😘</span></h2>
             <p class="subtext" style="margin-bottom: 0; font-style: italic;">there was only ever one right answer 🌸</p>
         </div>
-
     </div>
 
     <script>
         const SECRET_CODE = "love"; 
+        
+        // This stops ghost clicks on mobile when they tap 'No'
+        let isYesLocked = false; 
 
         function checkCode() {
             const inputCode = document.getElementById('access-code').value;
@@ -225,6 +159,8 @@
         }
 
         function goToSuccess() {
+            // If the ghost-click timer is active, ignore the click!
+            if (isYesLocked) return; 
             switchScreen('screen-question', 'screen-success');
         }
 
@@ -234,14 +170,16 @@
         }
 
         function moveNoButton(e) {
-            // This stops the mobile browser from generating a fake "click" 
-            // at the old coordinates after the button moves!
-            if (e) {
-                e.preventDefault();
-            }
+            if (e) e.preventDefault();
+
+            // Lock the 'Yes' button for half a second so the mobile phone's
+            // fake ghost-click bounces off safely.
+            isYesLocked = true;
+            setTimeout(() => {
+                isYesLocked = false;
+            }, 500);
 
             const noBtn = document.getElementById('btn-no');
-            
             const padding = 80;
             const maxX = window.innerWidth - noBtn.offsetWidth - padding;
             const maxY = window.innerHeight - noBtn.offsetHeight - padding;
