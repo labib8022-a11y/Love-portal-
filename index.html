@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -121,6 +120,8 @@
             font-weight: 500;
             cursor: pointer;
             transition: background 0.2s;
+            /* Prevents double-tap zooming on mobile while trying to click */
+            touch-action: manipulation; 
         }
 
         button:hover {
@@ -139,7 +140,6 @@
         .btn-group button {
             width: 120px;
             position: absolute;
-            /* Center the buttons horizontally in the container */
             left: calc(50% - 60px); 
             top: 0;
         }
@@ -180,7 +180,6 @@
 
     <div class="card">
         
-        <!-- SCREEN 1: PORTAL ACCESS -->
         <div id="screen-access" class="screen active">
             <span class="badge">Internal tool</span>
             <h2>Portal Access</h2>
@@ -195,18 +194,16 @@
             <p class="subtext">v1.0 · built for one person only</p>
         </div>
 
-        <!-- SCREEN 2: THE QUESTION -->
         <div id="screen-question" class="screen">
-            <span class="badge" style="background: #ffe3ec; color: #ff477e;">One question, Nowrin</span>
+            <span class="badge" style="background: #ffe3ec; color: #ff477e;">One question, Nowrin🧐</span>
             <h2>Do you love me?🥺</h2>
             
             <div class="btn-group">
                 <button id="btn-yes" onclick="goToSuccess()">Yes</button>
-                <button id="btn-no" onmouseover="moveNoButton()" onclick="moveNoButton()">No</button>
+                <button id="btn-no" onmouseover="moveNoButton(event)" ontouchstart="moveNoButton(event)">No</button>
             </div>
         </div>
 
-        <!-- SCREEN 3: SUCCESS -->
         <div id="screen-success" class="screen">
             <div class="heart-icon">💗</div>
             <h2>Aww, Love you too <span class="pink-text">jaan😘</span></h2>
@@ -236,17 +233,22 @@
             document.getElementById(showId).classList.add('active');
         }
 
-        function moveNoButton() {
+        function moveNoButton(e) {
+            // This stops the mobile browser from generating a fake "click" 
+            // at the old coordinates after the button moves!
+            if (e) {
+                e.preventDefault();
+            }
+
             const noBtn = document.getElementById('btn-no');
             
-            const padding = 100;
+            const padding = 80;
             const maxX = window.innerWidth - noBtn.offsetWidth - padding;
             const maxY = window.innerHeight - noBtn.offsetHeight - padding;
             
             const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
             const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
             
-            // Switch to fixed position so it breaks out of the overlapping stack and flies anywhere
             noBtn.style.position = 'fixed';
             noBtn.style.left = randomX + 'px';
             noBtn.style.top = randomY + 'px';
